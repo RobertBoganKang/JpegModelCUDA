@@ -173,6 +173,10 @@ __global__ void CUDA_MAIN(int *matrix, int *oarr, int *Qmatrix8, int *idxarr,
     FourierDCT(matrix, omatrix, Qmatrix8, idx, idy, row, col);
     ZigzagEncode(omatrix, oarr, idxarr, len, arrIdx, row, col);
 
+ 	/*break point here for
+	 *  array handeling
+	 *  ...*/
+  
     /**decoder*/
     Zeros(omatrix, row, col);
     ZigzagDecode(omatrix, oarr, idxarr, len, arrIdx, row, col);
