@@ -38,6 +38,7 @@ int **pgmOpen(char *file, int &imgx, int &imgy) {
 	imgx = stoi(str);
 	fscanf(fp, "%s", str);
 	imgy = stoi(str);
+	fscanf(fp, "%s", str);
 	int **imgdata = (int **) malloc(imgx * sizeof(int *));
 	for (int i = 0; i < imgy; ++i) {
 		imgdata[i] = (int *) malloc(imgy * sizeof(int));
@@ -56,7 +57,7 @@ void pgmWrite(char *file, int **imgdata, int imgx, int imgy) {
 	ofstream myfile;
 	myfile.open(file);
 	myfile << "P2\n";
-	myfile << imgx << " " << imgy << "\n";
+	myfile << imgx << " " << imgy << "\n" << "255" << endl;
 	for (int i = 0; i < imgx; ++i) {
 		for (int j = 0; j < imgy; ++j) {
 			myfile << imgdata[i][j] << "\t";
