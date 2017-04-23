@@ -156,7 +156,6 @@ __device__ void FourierDCT(int *matrix, int *omatrix, int *Qmatrix8, int idx,
     omatrix[row * BLOCK + col] = (int) round(
             tempmtr2[row * BLOCK + col] / Qmatrix8[row * BLOCK + col]);
     __syncthreads();
-    /*test*/
     matrix[idx * IMGX + idy] = omatrix[row * BLOCK + col];
 }
 
