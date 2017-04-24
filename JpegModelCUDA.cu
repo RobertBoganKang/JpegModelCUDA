@@ -271,7 +271,7 @@ int main() {
     /*get output of zigzag array*/
     int *d_outarr = NULL;
     errCUDA(cudaMalloc((void **) &d_outarr, blockX * blockY * len * sizeof(int)));
-    CUDA_MAIN << < grid, block >> > (d_matrix, d_outarr, d_Qmatrix8, d_Encodearr, len, blockX, szx, szy);
+    CUDA_MAIN<<<grid, block>>>(d_matrix, d_outarr, d_Qmatrix8, d_Encodearr, len, blockX, szx, szy);
 
     /*test: print zigzag array index*/
     int *outarr = (int *) malloc(blockX * blockY * len * sizeof(int));
