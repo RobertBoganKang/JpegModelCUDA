@@ -11,7 +11,6 @@ using namespace std;
 /**error handling simple*/
 /*global counter*/
 int counter = 0;
-
 void errCUDA(cudaError_t err) {
     if (err != cudaSuccess) {
         fprintf(stderr, "Error position %d (error code %s)!\n", counter, cudaGetErrorString(err));
@@ -19,6 +18,7 @@ void errCUDA(cudaError_t err) {
     }
     counter++;
 }
+
 /**image Read and Write*/
 /*this function is only available in c++11*/
 int stoi(char *c) {
