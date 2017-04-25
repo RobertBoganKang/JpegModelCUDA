@@ -120,9 +120,9 @@ void zigzagEncodeArray(int *array, int len) {
 __device__ float SumMatrix(float *matrix, int row, int col) {
     for (int offset = 1; offset < BLOCK; offset *= 2) {
         if ((row % (2 * offset) == 0 && col % (2 * offset) == 0) && row < BLOCK && col < BLOCK) {
-            matrix[row * BLOCK + col] += (matrix[(row) * BLOCK + (col + offset)]
-                                          + matrix[(row + offset) * BLOCK + (col)]
-                                          + matrix[(row + offset) * BLOCK + (col + offset)]);
+            matrix[row * BLOCK + col] += (matrix[(row) * BLOCK + (col + offset)] +
+                                          matrix[(row + offset) * BLOCK + (col)] +
+                                          matrix[(row + offset) * BLOCK + (col + offset)]);
         }
         __syncthreads();
     }
@@ -141,8 +141,8 @@ __device__ int Edges(int *matrix, int idx, int idy, int IMGX, int IMGY) {
     return res;
 }
 
-__device__ void FourierDCT(int *matrix, int *omatrix, int *Qmatrix8, int idx, int idy, int row,
-                           int col, int IMGX, int IMGY) {
+__device__ void
+FourierDCT(int *matrix, int *omatrix, int *Qmatrix8, int idx, int idy, int row, int col, int IMGX, int IMGY) {
     __shared__ float tempmtr[BLOCK * BLOCK], tempmtr2[BLOCK * BLOCK];
     __shared__ int matrixS[BLOCK * BLOCK];
     /*the matrix needs edge handling for dimensions not the multiple of 8*/
@@ -164,11 +164,11 @@ __device__ void FourierDCT(int *matrix, int *omatrix, int *Qmatrix8, int idx, in
 }
 
 __device__ void ZigzagEncode(int *matrix, int *array, int *idxarr, int len, int arrIdx, int row, int col) {
-    for (int i = 0; i < len; ++i) {
+    int i = row * BLOCK + col;
+    if (i < len) {
         int x = idxarr[2 * i];
         int y = idxarr[2 * i + 1];
-        if (row == x && col == y)
-            array[arrIdx + i] = matrix[x * BLOCK + y];
+        array[arrIdx + i] = matrix[x * BLOCK + y];
     }
 }
 
@@ -179,11 +179,11 @@ __device__ void Zeros(int *matrix, int row, int col) {
 }
 
 __device__ void ZigzagDecode(int *matrix, int *array, int *idxarr, int len, int arrIdx, int row, int col) {
-    for (int i = 0; i < len; ++i) {
+    int i = row * BLOCK + col;
+    if (i < len) {
         int x = idxarr[2 * i];
         int y = idxarr[2 * i + 1];
-        if (row == x && col == y)
-            matrix[x * BLOCK + y] = array[i + arrIdx];
+        matrix[x * BLOCK + y] = array[i + arrIdx];
     }
 }
 
@@ -276,6 +276,11 @@ int main() {
     /*test: print zigzag array index*/
     int *outarr = (int *) malloc(blockX * blockY * len * sizeof(int));
     errCUDA(cudaMemcpy(outarr, d_outarr, blockX * blockY * len * sizeof(int), cudaMemcpyDeviceToHost));
+	/*cout << "Zigzag array:" << endl;
+	for (int i = 0; i < blockX * blockY * len; ++i) {
+		cout << outarr[i] << " ";
+	}
+	cout << endl;*/
 
     /*output matrix*/
     int matrix2[szx][szy];
