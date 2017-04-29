@@ -52,12 +52,6 @@ void SfourierDCT_zigzagEncode(int **matrix, int Qmatrix8[][BLOCK], int *arr, int
                     tempMatrix2[v][u] = alpha * SsumMatrix(tempMatrix);
                 }
             }
-            /*test*/
-            for (int v = 0; v < BLOCK; ++v) {
-                for (int u = 0; u < BLOCK; ++u) {
-                    matrix[my + v][mx + u] = (int) round(1.0 / 4.0 * tempMatrix2[v][u] / Qmatrix8[v][u]);
-                }
-            }
             /*zigzag encode part*/
             for (int i = 0; i < len; ++i) {
                 int u = idxarr[2 * i];
